@@ -45,8 +45,8 @@ def run_cnn():
 
     cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=dense_layer2, labels=y))
 
-    # add an optimiser
-    optimiser = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(cross_entropy)
+    # add an optimizer
+    optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(cross_entropy)
 
     # define an accuracy assessment operation
     correct_prediction = tf.equal(tf.argmax(y, 1), tf.argmax(y_, 1))
@@ -69,7 +69,7 @@ def run_cnn():
             avg_cost = 0
             for i in range(total_batch):
                 batch_x, batch_y = mnist.train.next_batch(batch_size=batch_size)
-                _, c = sess.run([optimiser, cross_entropy], feed_dict={x: batch_x, y: batch_y})
+                _, c = sess.run([optimizer, cross_entropy], feed_dict={x: batch_x, y: batch_y})
                 avg_cost += c / total_batch
             test_acc = sess.run(accuracy, feed_dict={x: mnist.test.images, y: mnist.test.labels})
             print("Epoch:", (epoch + 1), "cost =", "{:.3f}".format(avg_cost), " test accuracy: {:.3f}".format(test_acc))
