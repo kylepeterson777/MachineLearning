@@ -5,27 +5,27 @@
 % Bayer Crop Science
 % December, 2018
 %%%%%%%%%%%%%%%%%%%%%
-% Soybean SCP Quality 
+
 
 clear all;clc; close all;
 
-load soybean_post_xray_singleseedsWG.mat;
+load data.mat;
 % images.data contains 128-by-128 images in a 4-D array.
-% images.labels contains the categorical array of the soybean seed (WG, normal, abnormal, dead).
+% images.labels contains the categorical array of the classes 0,1 .
 Xdata = double(data.images.data) / 255; WG_score = data.images.labels;
 classlabel = zeros(length(WG_score),1);
 for i = 1:length(WG_score)
     if strncmp(WG_score(i),'Ab',2) | strncmp(WG_score(i),'ab',2)
-        classlabel(i) = 0; % low germination class.
+        classlabel(i) = 0; % low class.
     elseif strncmp(WG_score(i),'De',2)
-        classlabel(i) = 0; % low germination class.
+        classlabel(i) = 0; % low class.
     elseif strncmp(WG_score(i),'Nor',3)
-        classlabel(i) = 1; % high germination class.
+        classlabel(i) = 1; % high class.
     else
         classlabel(i) = -1;
     end
 end
-% class 0 for low quality class (abnormal, dead), 1 - high quality class (normal)
+% class 0 for low quality class , 1 - high quality class 
 
 classlabel = classlabel';
 yclass = categorical(classlabel);
