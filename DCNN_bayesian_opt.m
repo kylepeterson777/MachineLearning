@@ -1,10 +1,10 @@
 % Deep Learning using Convolutional Neural Network (CNN)
 % Hyperparameters are automatically determined via Bayesian optimization
-%%%%%%%%%%%%%%%%%%%%%
+%%
 % Kyle T. Peterson
 % Bayer Crop Science
 % December, 2018
-%%%%%%%%%%%%%%%%%%%%%
+%%
 
 
 clear all;clc; close all;
@@ -33,7 +33,7 @@ ind1 = find(classlabel==0); ind2 = find(classlabel==1);
 n1 = length(ind1); n2 = length(ind2);
 rand('state',0); % For reproducibility
 
-% partition dataset
+%% partition dataset
 temp1 = ind1(randperm(n1)); temp2 = ind2(randperm(n2));
 train_portion = 0.7; validate_portion = 0.15;  test_portion = 0.15;
 n1_train = temp1(1:ceil(n1*train_portion));
@@ -54,7 +54,7 @@ X_test = Xdata(:,:,:,index_test); y_test = (yclass(index_test))';
 
 save train_validate_test_data index_train index_validate index_test;
 
-% augment training data with image rotations
+%% augment training data with image rotations
 
 X_train_augment = X_train; y_train_augment = y_train;
 nboost = size(X_train,4);
@@ -71,7 +71,7 @@ for index_image = 1:nboost
     X_train_augment(:,:,:,size(X_train_augment,4)+1) = rotated_image;
     y_train_augment = [y_train_augment;y_train(index_image)];
 end
-% Display some of the images.
+%% Display some of the images.
 figure;
 for j = 1:30
     subplot(6,5,j);
@@ -79,7 +79,7 @@ for j = 1:30
     imshow(selectImage,[]);
 end
 
-% Bayesian optimization
+%% Bayesian optimization
 optimVars = [
     optimizableVariable('NetworkDepth',[1 10],'Type','integer')
     optimizableVariable('InitialLearnRate',[1e-3 1e-1],'Transform','log')
@@ -103,26 +103,26 @@ valError = savedStruct.valError
 
 scores_test_class0 = scores_test(:,1);
 
-% ROC curve, test set data.
+%% ROC curve, test set data.
 [x_axis,y_axis,T,AUC] = perfcurve(y_test, scores_test_class0, '0');
 figure; plot(x_axis, y_axis); xlabel('False positive rate'); ylabel('True positive rate');
 graph_string = {['Test data, ROC AUC: ', num2str(AUC)]};
 text(0.1,0.1,graph_string);
 
-% PRC curve, precision-recall plot, test set data.
+%% PRC curve, precision-recall plot, test set data.
 [x_axis1,y_axis1,T1,AUC1] = perfcurve(y_test, scores_test_class0, '0', 'XCrit', 'tpr', 'YCrit', 'ppv');
 figure; plot(x_axis1, y_axis1); xlabel('Recall'); ylabel('Precision');
 graph_string1 = {['Test data, PRC AUC: ', num2str(AUC1)]};
 text(0.1,0.06,graph_string1);
 
-% Compute the confusion matrix.
+%% Compute the confusion matrix.
 targets(:,1)=(y_test=='0');
 targets(:,2)=(y_test=='1');
 outputs(:,1)=(ypred_test=='0');
 outputs(:,2)=(ypred_test=='1');
 figure; plotconfusion(double(targets'),double(outputs'))
 
-% display extracted network features
+%% display extracted network features
 layer = 'conv1'; %layer to be visualized
 channels = 1:30;
 I = deepDreamImage(trainedNet,layer, channels,...
