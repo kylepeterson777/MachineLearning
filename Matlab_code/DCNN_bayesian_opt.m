@@ -2,7 +2,6 @@
 % Hyperparameters are automatically determined via Bayesian optimization
 %%
 % Kyle T. Peterson
-% Bayer Crop Science
 % December, 2018
 %%
 
@@ -16,11 +15,11 @@ Xdata = double(data.images.data) / 255; WG_score = data.images.labels;
 classlabel = zeros(length(WG_score),1);
 for i = 1:length(WG_score)
     if strncmp(WG_score(i),'Ab',2) | strncmp(WG_score(i),'ab',2)
-        classlabel(i) = 0; % low class.
+        classlabel(i) = 0; % class 0.
     elseif strncmp(WG_score(i),'De',2)
-        classlabel(i) = 0; % low class.
+        classlabel(i) = 0; % class 0.
     elseif strncmp(WG_score(i),'Nor',3)
-        classlabel(i) = 1; % high class.
+        classlabel(i) = 1; % class 1.
     else
         classlabel(i) = -1;
     end
