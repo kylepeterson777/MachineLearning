@@ -3,22 +3,10 @@
 % Created by: Kyle T. Peterson
 
 % images.data contains 128-by-128 images in a 4-D array.
-Xdata = double(data.images.data) / 255; WG_score = data.images.labels;
+Xdata = double(data.images.data) / 255; score = data.images.labels;
 Xdata = repmat(im, [1,1,3]);
-classlabel = zeros(length(WG_score),1);
+classlabel = zeros(length(score),1);
 % assign binary class label
-for i = 1:length(WG_score)
-    if strncmp(WG_score(i),'Ab',2) | strncmp(WG_score(i),'ab',2)
-        classlabel(i) = 0; 
-    elseif strncmp(WG_score(i),'De',2)
-        classlabel(i) = 0; 
-    elseif strncmp(WG_score(i),'Nor',3)
-        classlabel(i) = 1;
-    else
-        classlabel(i) = -1;
-    end
-end
-
 
 classlabel = classlabel';
 yclass = categorical(classlabel);
