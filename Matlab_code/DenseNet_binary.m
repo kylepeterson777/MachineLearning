@@ -79,7 +79,7 @@ for index_image = 1:nboost
     y_train_augment = [y_train_augment;y_train(index_image)];
 end
 % load network  
-load dense_ray.mat
+load denseNet.mat
 % options settings for the stochastic gradient descent with momentum.
 options = trainingOptions('sgdm',...
         'MaxEpochs',20,... 
@@ -88,7 +88,7 @@ options = trainingOptions('sgdm',...
         'MiniBatchSize',64,...
         'Plots','training-progress');
     
-[net,traininfo] = trainNetwork(X_train_augment,y_train_augment,dense_ray,options);
+[net,traininfo] = trainNetwork(X_train_augment,y_train_augment,denseNet,options);
 
 ypred_validate = classify(net,X_validate);
 
