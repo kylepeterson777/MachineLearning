@@ -44,7 +44,7 @@ def splitTrainTestSet(X, y, testRatio, randomState=345):
    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=testRatio, random_state=randomState,stratify=y)
    return X_train, X_test, y_train, y_test
    
-
+#determines number of input channels
 def applyPCA(X, numComponents=75):
     newX = np.reshape(X, (-1, X.shape[2]))
     pca = PCA(n_components=numComponents, whiten=True)
@@ -84,6 +84,7 @@ X.shape, y.shape
 
 K = X.shape[2]
 
+#number of channels to use after PCA
 K = 30 if dataset == 'IP' else 15
 X,pca = applyPCA(X,numComponents=K)
 
